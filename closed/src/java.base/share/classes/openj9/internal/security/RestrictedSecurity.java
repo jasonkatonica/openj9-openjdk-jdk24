@@ -138,9 +138,14 @@ public final class RestrictedSecurity {
             }
         }
 
-        // If user has specified a profile, use that
-        selectedProfile = System.getProperty("semeru.customprofile");
-        userSetProfile = selectedProfile != null;
+        // If user has specified a profile, use that instead of the default.
+        String userSpecifiedProfile = System.getProperty("semeru.customprofile");
+        if (userSpecifiedProfile != null) {
+            selectedProfile = userSpecifiedProfile;
+            userSetProfile = true;
+        } else {
+            userSetProfile = false;
+        }
 
         // Check if FIPS is supported on this platform without explicitly setting a profile.
         if (userEnabledFIPS && !isFIPSSupported && !userSetProfile) {
